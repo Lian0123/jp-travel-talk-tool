@@ -1,6 +1,11 @@
 {
   "name": "my-typescript-react-template",
   "version": "0.1.0",
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -19,6 +24,9 @@
     "@types/react-dom": "18.0.2",
     "eslint": "8.14.0",
     "eslint-config-next": "12.1.5",
-    "typescript": "4.6.3"
+    "typescript": "4.6.3",
+    "commitizen": "4.2.4",
+    "husky": "7.0.0",
+    "cz-conventional-changelog": "3.3.0"
   }
 }
