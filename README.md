@@ -1,1 +1,1 @@
-# my-typescript-react-template
+# jp-travel-talk-tool
