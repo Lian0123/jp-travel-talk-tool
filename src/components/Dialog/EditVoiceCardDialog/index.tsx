@@ -1,6 +1,6 @@
 /* React Config */
 import * as React from 'react';
-import { useState } from "react"
+import { useState } from "react";
 
 /* React i18n Config */
 import "../../../i18n";
@@ -27,12 +27,12 @@ import TextField from '@mui/material/TextField';
 
 interface IEditVoiceCardDialog {
     open: boolean;
-    setOpen: Function;
+    setOpen: (...dto :any) => any;
     tags: any[];
-    setIsShowAddTagDialogOpen: Function;
+    setIsShowAddTagDialogOpen: (...dto :any) => any;
     voiceCards: any[];
-    setVoiceCards: Function;
-    updateCommand: Function;
+    setVoiceCards: (...dto :any) => any;
+    updateCommand: (...dto :any) => any;
     [key: string]: any;
 }
 
@@ -70,7 +70,7 @@ const EditVoiceCardDialog = (prop: IEditVoiceCardDialog) => {
     const { uuid, title, tag, about, text } = voiceCard;
 
     if(!title?.trim()?.length) {
-      alert("title not found")
+      alert("title not found");
       return;
     }
 
@@ -79,9 +79,9 @@ const EditVoiceCardDialog = (prop: IEditVoiceCardDialog) => {
 
     await kuroshiro.init(analyzer);
 
-    const parseText = await kuroshiro.convert(Kuroshiro.Util.kanaToHiragna(text), { to: "hiragana" })
+    const parseText = await kuroshiro.convert(Kuroshiro.Util.kanaToHiragna(text), { to: "hiragana" });
     if(!parseText?.trim()?.length) {
-      alert("about not found")
+      alert("about not found");
       return;
     }
 
@@ -95,18 +95,18 @@ const EditVoiceCardDialog = (prop: IEditVoiceCardDialog) => {
       order,
       createdTime,
       updatedTime: dayjs().toISOString(),
-    }
+    };
   
-    await updateCommand('textData', textData)
+    await updateCommand('textData', textData);
     setVoiceCards((previousData :any) => (
       [...(previousData.filter((e :any)=> e.uuid !== uuid)), textData]
-    ))
+    ));
     setOpen(false);
   };
   
   const handleAddTag = () => {
-    setIsShowAddTagDialogOpen(true)
-  }
+    setIsShowAddTagDialogOpen(true);
+  };
 
   const handleClose = () => {
     setOpen(false);
@@ -136,7 +136,7 @@ const EditVoiceCardDialog = (prop: IEditVoiceCardDialog) => {
                       setVoiceCard(previousData => ({ 
                         ...previousData,
                         title: value
-                      }))
+                      }));
                     }}
                     variant="standard"
                     style={{ paddingTop: "1rem", paddingBottom: "1rem" }}
@@ -152,7 +152,7 @@ const EditVoiceCardDialog = (prop: IEditVoiceCardDialog) => {
                         setVoiceCard(previousData => ({ 
                           ...previousData,
                           tag: value
-                        }))
+                        }));
                       }}
                       variant="standard"
                       style={{ paddingTop: "1rem", paddingBottom: "1rem" }}
@@ -181,7 +181,7 @@ const EditVoiceCardDialog = (prop: IEditVoiceCardDialog) => {
                       setVoiceCard(previousData => ({ 
                         ...previousData,
                         text: value
-                      }))
+                      }));
                     }}
                     multiline
                     rows={3}
@@ -199,7 +199,7 @@ const EditVoiceCardDialog = (prop: IEditVoiceCardDialog) => {
                       setVoiceCard(previousData => ({ 
                         ...previousData,
                         about: value
-                      }))
+                      }));
                     }}
                     multiline
                     rows={3}
@@ -229,6 +229,6 @@ const EditVoiceCardDialog = (prop: IEditVoiceCardDialog) => {
       </Dialog>
     </div>
   );
-}
+};
 
-export default EditVoiceCardDialog
+export default EditVoiceCardDialog;

@@ -1,6 +1,6 @@
 /* React Config */
-import * as React from "react"
-import {useEffect, useState} from "react"
+import * as React from "react";
+import {useEffect, useState} from "react";
 
 /* React i18n Config */
 import { useTranslation } from "react-i18next";
@@ -8,12 +8,12 @@ import "../../i18n";
 
 /* Mui Compoent */
 import AppBar from "@mui/material/AppBar";
-import Backdrop from "@mui/material/Backdrop"
-import Container from "@mui/material/Container"
-import MenuItem from "@mui/material/MenuItem"
+import Backdrop from "@mui/material/Backdrop";
+import Container from "@mui/material/Container";
+import MenuItem from "@mui/material/MenuItem";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import Select from "@mui/material/Select"
+import Select from "@mui/material/Select";
 import SpeedDial from "@mui/material/SpeedDial";
 import SpeedDialAction from "@mui/material/SpeedDialAction";
 
@@ -24,7 +24,7 @@ import AddVoiceCardDialog from '../Dialog/AddVoiceCardDialog';
 import AddTagsDialog from '../Dialog/AddTagsDialog';
 import ExportDialog from '../Dialog/ExportDialog';
 import SearchDialog from '../Dialog/SearchDialog';
-import VoiceCard from "../VoiceCard"
+import VoiceCard from "../VoiceCard";
 
 const ViewPage = (props: any) => {
     const {
@@ -50,32 +50,32 @@ const ViewPage = (props: any) => {
     const [isShowAddTagDialog,setIsShowAddTagDialog] = useState(false);
     const [isShowSearchDialog,setIsShowSearchDialog] = useState(false);
 
-    const [isClickMenu, setIsClickMenu] = useState(false)
+    const [isClickMenu, setIsClickMenu] = useState(false);
     const handleOpen = () => setIsClickMenu(true);
     const handleClose = () => setIsClickMenu(false);
 
     const initVoiceCardData = async () => {
-        const data = await readAllCommand('textData')
+        const data = await readAllCommand('textData');
         if(!data?.length) {
              return;
         }
-        setVoiceCards(data)
-    }
+        setVoiceCards(data);
+    };
 
     const initTagData = async () => {
-        const data = await readAllCommand('tagData')
+        const data = await readAllCommand('tagData');
         if(!data?.length) {
              return;
         }
-        setTags(data)
-    }
+        setTags(data);
+    };
 
     useEffect(() => {
         if(isConnection) {
-            initVoiceCardData()
-            initTagData()
+            initVoiceCardData();
+            initTagData();
         }
-    }, [isConnection])
+    }, [isConnection]);
       
     return (
         <> 
@@ -126,7 +126,7 @@ const ViewPage = (props: any) => {
                     id="demo-simple-select"
                     value={'all'}
                     size="medium"
-                    IconComponent={props => (
+                    IconComponent={() => (
                         <img src="src/public/images/white_select_icon.png" height={20} width={20} />
                     )}
                     onChange={(e) => setTag(e.target.value)}
@@ -159,8 +159,8 @@ const ViewPage = (props: any) => {
                             tooltipOpen
                             style={{ lineHeight: "1rem" }}
                             onClick={() => {
-                                handleClose()
-                                setIsShowAboutDialog(true)
+                                handleClose();
+                                setIsShowAboutDialog(true);
                             }}
                         />
                         <SpeedDialAction
@@ -170,8 +170,8 @@ const ViewPage = (props: any) => {
                             tooltipOpen
                             style={{ lineHeight: "1rem" }}
                             onClick={() => {
-                                handleClose()
-                                setIsShowExportDialog(true)
+                                handleClose();
+                                setIsShowExportDialog(true);
                             }}
                         />
                         <SpeedDialAction
@@ -181,8 +181,8 @@ const ViewPage = (props: any) => {
                             tooltipOpen
                             style={{ lineHeight: "1rem" }}
                             onClick={() => {
-                                handleClose()
-                                setIsShowSearchDialog(true)
+                                handleClose();
+                                setIsShowSearchDialog(true);
                             }}
                         />
                         <SpeedDialAction
@@ -192,8 +192,8 @@ const ViewPage = (props: any) => {
                             tooltipOpen
                             style={{ lineHeight: "1rem" }}
                             onClick={() => {
-                                handleClose()
-                                setIsShowAddCardDialog(true)
+                                handleClose();
+                                setIsShowAddCardDialog(true);
                             }}
                         />
                 </SpeedDial>
@@ -246,7 +246,7 @@ const ViewPage = (props: any) => {
          voiceCards={voiceCards}
          />
         </>
-    )
-}
+    );
+};
 
-export default ViewPage
+export default ViewPage;

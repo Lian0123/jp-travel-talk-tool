@@ -1,18 +1,18 @@
 /* React Config */
-import * as React from "react"
-import {useState} from "react"
+import * as React from "react";
+import {useState} from "react";
 
 /* React i18n Config */
 import { useTranslation } from "react-i18next";
 import "../../i18n";
 
 /* Mui Compoent */
-import Box from "@mui/material/Box"
-import Button from "@mui/material/Button"
-import Container from "@mui/material/Container"
-import Grid from "@mui/material/Grid"
-import Menu from "@mui/material/Menu"
-import MenuItem from "@mui/material/MenuItem"
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+import Grid from "@mui/material/Grid";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 
 /* Components */
 import VoicePlayer from "../Common/VoicePlayer";
@@ -39,7 +39,6 @@ const VoiceCard = (props: IVoiceCard) => {
         aboutText,
         setIsShowAddTagDialog,
         createdTime,
-        updatedTime,
         voiceCards,
         setVoiceCards,
         order,
@@ -51,29 +50,29 @@ const VoiceCard = (props: IVoiceCard) => {
     } = props;
 
     const { t } = useTranslation();
-    const [isClickMenu, setIsClickMenu] = useState(false)
+    const [isClickMenu, setIsClickMenu] = useState(false);
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     
     const [isShowEditVoiceCardDialog,setIsShowEditVoiceCardDialog] = useState(false);
     // const [isShowOrderCardDialog, setIsShowOrderCardDialog] = useState(false);
     
     
-    const [isClickPlaying, setIsClickPlaying] = useState(false)
+    const [isClickPlaying, setIsClickPlaying] = useState(false);
     const handleOpen = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
         setAnchorEl(event.currentTarget);
         setIsClickMenu(true);
-    }
+    };
     const handleClose = () => {
-        setIsClickMenu(false)
-        setAnchorEl(null)
-    }
-    const handelEdit = (uuid: any) => {
-        setIsShowEditVoiceCardDialog(true)
-    }
-    const handelDelete = async (uuid: any) => {
-        await deleteCommand('textData',uuid)
-        setVoiceCards((previousData :any) => previousData?.filter((data: any) => data.uuid !== uuid))
-    }
+        setIsClickMenu(false);
+        setAnchorEl(null);
+    };
+    const handelEdit = () => {
+        setIsShowEditVoiceCardDialog(true);
+    };
+    const handelDelete = async () => {
+        await deleteCommand('textData',uuid);
+        setVoiceCards((previousData :any) => previousData?.filter((data: any) => data.uuid !== uuid));
+    };
     
     return (
         <>
@@ -85,7 +84,15 @@ const VoiceCard = (props: IVoiceCard) => {
                         alignItems="center"
                     >
                         <Box width="30%">
-                            <Box m={1} style={{ paddingTop: "5px", paddingBottom: "5px", backgroundColor: "#000000ff", color: "#ffffffff", textAlign: "center" }}>
+                            <Box 
+                                m={1}
+                                style={{ 
+                                    paddingTop: "5px",
+                                    paddingBottom: "5px",
+                                    backgroundColor: "#000000ff",
+                                    color: "#ffffffff",
+                                    textAlign: "center"
+                                }}>
                                 <span><b>{tags?.find((tagData:any) => tagData?.uuid === tag)?.name || t("notTag")}</b></span>
                             </Box>
                         </Box>
@@ -97,7 +104,15 @@ const VoiceCard = (props: IVoiceCard) => {
                         <Box width="20%" style={{ textAlign: "right"}}>
                             <Button
                                 onClick={handleOpen}
-                                style={{ zIndex: 5, minWidth: "32px", textAlign: "right", lineHeight: "1rem", padding: 0, marginRight: '1rem', marginLeft: '1rem'}}
+                                style={{
+                                     zIndex: 5, 
+                                     minWidth: "32px", 
+                                     textAlign: "right", 
+                                     lineHeight: "1rem", 
+                                     padding: 0, 
+                                     marginRight: '1rem', 
+                                     marginLeft: '1rem'
+                                }}
                                 id="card-menu-button"
                                 aria-controls={'card-menu'}
                                 aria-haspopup={isClickMenu ? 'true' : undefined}
@@ -113,9 +128,9 @@ const VoiceCard = (props: IVoiceCard) => {
                             open={isClickMenu}
                             onClose={handleClose}
                         >
-                            <MenuItem onClick={() => handelEdit(uuid)}>{t("edit")}</MenuItem>
-                            <MenuItem onClick={() => handelDelete(uuid)}>{t("delete")}</MenuItem>
-                            <MenuItem disabled onClick={() => {}}>{t("setOrder")}</MenuItem>
+                            <MenuItem onClick={() => handelEdit()}>{t("edit")}</MenuItem>
+                            <MenuItem onClick={() => handelDelete()}>{t("delete")}</MenuItem>
+                            <MenuItem disabled>{t("setOrder")}</MenuItem>
                         </Menu>
                     </Grid>
                     <Box sx={{ height:1, border:1,}} />
@@ -146,6 +161,7 @@ const VoiceCard = (props: IVoiceCard) => {
             <VoicePlayer
                 text={speakText}
                 isClickPlaying={isClickPlaying}
+                setIsClickPlaying={setIsClickPlaying}
             />
 
          <EditVoiceCardDialog
@@ -171,7 +187,7 @@ const VoiceCard = (props: IVoiceCard) => {
        
         {/* chek set order */}
         </>
-    )
-}
+    );
+};
 
-export default VoiceCard
+export default VoiceCard;

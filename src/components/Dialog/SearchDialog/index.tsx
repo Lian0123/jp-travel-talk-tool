@@ -20,8 +20,8 @@ import TextField from '@mui/material/TextField';
 
 interface ISearchDialog {
     open: boolean;
-    setOpen: Function;
-    setSearch: Function;
+    setOpen: (...dto :any) => any;
+    setSearch: (...dto :any) => any;
 }
 
 const SearchDialog = (prop: ISearchDialog) => {
@@ -85,6 +85,6 @@ const SearchDialog = (prop: ISearchDialog) => {
       </Dialog>
     </div>
   );
-}
+};
 
-export default SearchDialog
+export default SearchDialog;

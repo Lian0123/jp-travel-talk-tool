@@ -26,10 +26,10 @@ import TextField from '@mui/material/TextField';
 
 interface IAddTagsDialog {
     open: boolean;
-    setOpen: Function;
+    setOpen: (...dto :any) => any;
     tags: any[];
-    setTags: Function;
-    createCommand: Function;
+    setTags: (...dto :any) => any;
+    createCommand: (...dto :any) => any;
 }
 
 const DEFAULT_VOICE_CARD_DATA = {
@@ -54,7 +54,7 @@ const AddTagsDialog = (prop: IAddTagsDialog) => {
   const handleAdd = async () => {
     const { name } = tagsData;
     if(!name?.trim().length) {
-      alert("name not found")
+      alert("name not found");
       return;
     }
     const tagData = {
@@ -63,14 +63,14 @@ const AddTagsDialog = (prop: IAddTagsDialog) => {
       order: 0,
       createdTime: dayjs().toISOString(),
       updatedTime: dayjs().toISOString(),
-    }
-    createCommand('tagData',tagData)
+    };
+    createCommand('tagData',tagData);
     setTags((previousData :any) => ([
       ...previousData, tagData
-    ]))
-    await setTagsData(DEFAULT_VOICE_CARD_DATA)
+    ]));
+    await setTagsData(DEFAULT_VOICE_CARD_DATA);
     setOpen(false);
-  }
+  };
 
   const handleSubmit = () => {
     setOpen(false);
@@ -104,7 +104,7 @@ const AddTagsDialog = (prop: IAddTagsDialog) => {
                       setTagsData(previousData => ({ 
                         ...previousData,
                         name: value
-                      }))
+                      }));
                     }}
                     variant="standard"
                     style={{ paddingTop: "1rem", paddingBottom: "1rem" }}
@@ -153,6 +153,6 @@ const AddTagsDialog = (prop: IAddTagsDialog) => {
       </Dialog>
     </div>
   );
-}
+};
 
-export default AddTagsDialog
+export default AddTagsDialog;

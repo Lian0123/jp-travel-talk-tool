@@ -1,6 +1,6 @@
 /* React Config */
 import * as React from 'react';
-import { useState } from "react"
+import { useState } from "react";
 
 /* React i18n Config */
 import "../../../i18n";
@@ -31,12 +31,12 @@ import { transform } from '../../../utils';
 
 interface IAddVoiceCardDialog {
     open: boolean;
-    setOpen: Function;
+    setOpen: (...dto :any) => any;
     tags: any[];
-    setIsShowAddTagDialogOpen: Function;
+    setIsShowAddTagDialogOpen: (...dto :any) => any;
     voiceCards: any[];
-    setVoiceCards: Function;
-    createCommand: Function;
+    setVoiceCards: (...dto :any) => any;
+    createCommand: (...dto :any) => any;
     [key: string]: any;
 }
 
@@ -80,7 +80,7 @@ const AddVoiceCardDialog = (prop: IAddVoiceCardDialog) => {
     const { title, tag, about, text } = voiceCard;
 
     if(!title?.trim()?.length) {
-      alert("title not found")
+      alert("title not found");
       return;
     }
 
@@ -89,9 +89,9 @@ const AddVoiceCardDialog = (prop: IAddVoiceCardDialog) => {
 
     await kuroshiro.init(analyzer);
 
-    const parseText = await kuroshiro.convert(Kuroshiro.Util.kanaToHiragna(text), { to: "hiragana" })
+    const parseText = await kuroshiro.convert(Kuroshiro.Util.kanaToHiragna(text), { to: "hiragana" });
     if(!parseText?.trim()?.length) {
-      alert("about not found")
+      alert("about not found");
       return;
     }
 
@@ -105,19 +105,19 @@ const AddVoiceCardDialog = (prop: IAddVoiceCardDialog) => {
       order: voiceCards.length + 1,
       createdTime: dayjs().toISOString(),
       updatedTime: dayjs().toISOString(),
-    }
+    };
   
-    await createCommand('textData', textData)
+    await createCommand('textData', textData);
     setVoiceCards((previousData :any) => ([
       ...previousData, textData
-    ]))
-    setVoiceCard(DEFAULT_VOICE_CARD_DATA)
+    ]));
+    setVoiceCard(DEFAULT_VOICE_CARD_DATA);
     setOpen(false);
   };
   
   const handleAddTag = () => {
-    setIsShowAddTagDialogOpen(true)
-  }
+    setIsShowAddTagDialogOpen(true);
+  };
 
   const handleClose = () => {
     setOpen(false);
@@ -147,7 +147,7 @@ const AddVoiceCardDialog = (prop: IAddVoiceCardDialog) => {
                       setVoiceCard(previousData => ({ 
                         ...previousData,
                         title: value
-                      }))
+                      }));
                     }}
                     variant="standard"
                     style={{ paddingTop: "1rem", paddingBottom: "1rem" }}
@@ -163,7 +163,7 @@ const AddVoiceCardDialog = (prop: IAddVoiceCardDialog) => {
                         setVoiceCard(previousData => ({ 
                           ...previousData,
                           tag: value
-                        }))
+                        }));
                       }}
                       variant="standard"
                       style={{ paddingTop: "1rem", paddingBottom: "1rem" }}
@@ -192,7 +192,7 @@ const AddVoiceCardDialog = (prop: IAddVoiceCardDialog) => {
                       setVoiceCard(previousData => ({ 
                         ...previousData,
                         text: value
-                      }))
+                      }));
                     }}
                     multiline
                     rows={3}
@@ -210,7 +210,7 @@ const AddVoiceCardDialog = (prop: IAddVoiceCardDialog) => {
                       setVoiceCard(previousData => ({ 
                         ...previousData,
                         about: value
-                      }))
+                      }));
                     }}
                     multiline
                     rows={3}
@@ -240,6 +240,6 @@ const AddVoiceCardDialog = (prop: IAddVoiceCardDialog) => {
       </Dialog>
     </div>
   );
-}
+};
 
-export default AddVoiceCardDialog
+export default AddVoiceCardDialog;

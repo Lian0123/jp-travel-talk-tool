@@ -1,23 +1,24 @@
-import * as React from "react"
-import {useEffect} from "react"
+import * as React from "react";
+import {useEffect} from "react";
 
 
 const VoicePlayer = (props:any) => {
-    let { text = '', isClickPlaying = false } = props;
+    const { text = '' } = props;
+    const { isClickPlaying = false, setIsClickPlaying } = props;
     let voices :any[] = [];
 
     useEffect(()=>{
         if (voices?.length) {
-            isClickPlaying = false;
-            return
+            setIsClickPlaying(false);
+            return;
         }
-        voices = text.split('').map((char :string) => `./src/public/${char}.wav`)
+        voices = text.split('').map((char :string) => `./src/public/${char}.wav`);
         playAudio();
-    }, [isClickPlaying])
+    }, [isClickPlaying]);
 
     const playAudio = () => {
         if (!voices?.length) {
-            isClickPlaying = false;
+            setIsClickPlaying(false);
             return;
         }
     
@@ -25,17 +26,16 @@ const VoicePlayer = (props:any) => {
 
         try {
             const audio = new Audio(voice);
-
             audio.play();
-            audio.addEventListener("ended", async (event) => {
-                playAudio()
-            })
+            audio.addEventListener("ended", async () => {
+                playAudio();
+            });
         } catch (error) {
-            playAudio()
+            playAudio();
         }
-    }
+    };
 
-    return <></>
-}
+    return <></>;
+};
 
-export default VoicePlayer
+export default VoicePlayer;

@@ -26,7 +26,7 @@ import { APP_NAME_SPACE, VERSION } from '../../../constants/common';
 
 interface IExportVoiceCardDialog {
     open: boolean;
-    setOpen: Function;
+    setOpen: (...dto :any) => any;
     tags: any[];
     voiceCards: any[];
 }
@@ -52,8 +52,8 @@ const AddVoiceCardDialog = (prop: IExportVoiceCardDialog) => {
     const exportjson = {
       appName: APP_NAME_SPACE,
       version: VERSION,
-      data: voiceCards
-    } 
+      data: matchVoiceCards
+    }; 
     const element = document.createElement("a");
     const file = new Blob([JSON.stringify(exportjson, null, 4)], {type: 'text/plain'});
     element.href = URL.createObjectURL(file);
@@ -89,7 +89,7 @@ const AddVoiceCardDialog = (prop: IExportVoiceCardDialog) => {
                       value={selectTag}
                       onChange={(event) => {
                         const { value } = event.target;
-                        setSelectTag(value)
+                        setSelectTag(value);
                       }}
                       variant="standard"
                       style={{ paddingTop: "1rem", paddingBottom: "1rem" }}
@@ -121,6 +121,6 @@ const AddVoiceCardDialog = (prop: IExportVoiceCardDialog) => {
       </Dialog>
     </div>
   );
-}
+};
 
-export default AddVoiceCardDialog
+export default AddVoiceCardDialog;

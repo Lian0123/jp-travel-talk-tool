@@ -1,6 +1,6 @@
 /* React Config */
 import * as React from 'react';
-import { useRef } from "react"
+import { useRef } from "react";
 
 /* React i18n Config */
 import "../../../i18n";
@@ -21,10 +21,10 @@ import { APP_NAME_SPACE } from '../../../constants/common';
 
 interface IAddCardDialog {
     open: boolean;
-    setOpen: Function;
-    setCardDialogOpen: Function;
-    setVoiceCards: Function;
-    createCommand: Function;
+    setOpen: (...dto :any) => any;
+    setCardDialogOpen: (...dto :any) => any;
+    setVoiceCards: (...dto :any) => any;
+    createCommand: (...dto :any) => any;
 }
 
 const AddCardDialog = (prop: IAddCardDialog) => {
@@ -50,43 +50,43 @@ const AddCardDialog = (prop: IAddCardDialog) => {
   const handleChange = (event:any) => {
     const file = event.target.files[0];
     const reader = new FileReader();
-    console.log(reader)
+    console.log(reader);
 
     reader.readAsText(file, "UTF-8");
     reader.onload = async (evt) => {
-      console.log(evt.target.result)
+      console.log(evt.target.result);
       let jsonfile;
   
       // check is json
       try {
-        jsonfile = JSON.parse(evt.target.result as string)
+        jsonfile = JSON.parse(evt.target.result as string);
       } catch (err) {
-        alert("only update json file")
-        return
+        alert("only update json file");
+        return;
       }
  
       // check format
       if(jsonfile?.appName!== APP_NAME_SPACE){
-        alert("update json file format error")
-        return
+        alert("update json file format error");
+        return;
       }
       if(!Array.isArray(jsonfile?.data) || !jsonfile?.data?.length){
-        alert("update json file format error")
-        return
+        alert("update json file format error");
+        return;
       }
  
       // check version
       for (const textData of jsonfile.data) {
-        await createCommand('textData', textData)
+        await createCommand('textData', textData);
         setVoiceCards((previousData :any) => ([
           ...previousData, textData
-        ]))
+        ]));
       }
-    }
+    };
     setOpen(false);
   };
 
-  const handleImportJson = (event:any) => {
+  const handleImportJson = () => {
     uploadFile.current.click();
   };
 
@@ -149,7 +149,6 @@ const AddCardDialog = (prop: IAddCardDialog) => {
       </Dialog>
     </div>
   );
-}
+};
 
-        // @ts-ignore
-export default AddCardDialog
+export default AddCardDialog;

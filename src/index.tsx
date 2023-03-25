@@ -1,9 +1,7 @@
 
-import * as React from "react"
+import * as React from "react";
 import * as ReactDOM from 'react-dom';
-import ViewPage from "./components/ViewPage";
 
-import { useTranslation } from "react-i18next";
 import "./i18n";
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -16,8 +14,6 @@ const theme = createTheme({
     },
   },
 });
-// import '../styles/globals.css'
-
 
 const root = document.getElementById('root');
 
@@ -29,6 +25,6 @@ const App = () => {
             </React.Fragment>
         </ThemeProvider>
     );
-}
+};
 
 ReactDOM.render(<App />, root);

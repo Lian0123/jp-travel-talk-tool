@@ -20,10 +20,10 @@ import TextField from '@mui/material/TextField';
 
 interface IAboutDialog {
     open: boolean;
-    setOpen: Function;
-    createCommand: Function;
-    readCommand: Function;
-    deleteCommand: Function;
+    setOpen: (...dto :any) => any;
+    createCommand: (...dto :any) => any;
+    readCommand: (...dto :any) => any;
+    deleteCommand: (...dto :any) => any;
     isConnection: boolean;
 }
 
@@ -45,53 +45,53 @@ const AboutDialog = (prop: IAboutDialog) => {
    } = prop;
 
    const { t, i18n } = useTranslation();
-  const [ configData, setConfigData ] = useState(DEFAULT_CONFIG) 
+  const [ configData, setConfigData ] = useState(DEFAULT_CONFIG); 
 
 
   const initChangeLanguage = async () => {
-    const data = await readCommand('configData','language')
+    const data = await readCommand('configData','language');
     const { value } = data;
     if(!value) {
       i18n.changeLanguage(DEFAULT_CONFIG.language);
-      return
+      return;
     }
 
     i18n.changeLanguage(value || DEFAULT_CONFIG.language);
     setConfigData(previousData => ({ 
       ...previousData,
       language: value || DEFAULT_CONFIG.language
-    }))
+    }));
     
-  }
+  };
   const initChangeMode = async () => {
-    const data = await readCommand('configData','mode')
-    const { value } = data?.value;
+    const data = await readCommand('configData','mode');
+    const value = data?.value?.value;
     if(!value) {
-      return
+      return;
     }
 
     setConfigData(previousData => ({ 
       ...previousData,
       mode: value || DEFAULT_CONFIG.mode
-    }))
-  }
+    }));
+  };
   useEffect(() => {
     if(isConnection) {
-      initChangeLanguage()
-      initChangeMode()
+      initChangeLanguage();
+      initChangeMode();
     }
-  }, [isConnection])
+  }, [isConnection]);
   
   useEffect(() => {
-    deleteCommand('configData', 'language')
-    createCommand('configData', { key: "language", value: configData.language })
+    deleteCommand('configData', 'language');
+    createCommand('configData', { key: "language", value: configData.language });
     i18n.changeLanguage(configData.language);
-  }, [configData.language])
+  }, [configData.language]);
   
   useEffect(() => {
-    deleteCommand('configData', 'mode')
-    createCommand('configData', { key: "mode", value: configData.mode })
-  }, [configData.mode])
+    deleteCommand('configData', 'mode');
+    createCommand('configData', { key: "mode", value: configData.mode });
+  }, [configData.mode]);
 
   const handleClose = () => {
     setOpen(false);
@@ -123,7 +123,7 @@ const AboutDialog = (prop: IAboutDialog) => {
                       setConfigData(previousData => ({ 
                         ...previousData,
                         language: value
-                      }))
+                      }));
                     }}
                     variant="standard"
                     style={{ paddingTop: "1rem", paddingBottom: "1rem" }}
@@ -142,7 +142,7 @@ const AboutDialog = (prop: IAboutDialog) => {
                       setConfigData(previousData => ({ 
                         ...previousData,
                         mode: value
-                      }))
+                      }));
                     }}
                     variant="standard"
                     style={{ paddingTop: "1rem", paddingBottom: "1rem" }}
@@ -170,6 +170,6 @@ const AboutDialog = (prop: IAboutDialog) => {
       </Dialog>
     </div>
   );
-}
+};
 
-export default AboutDialog
+export default AboutDialog;
