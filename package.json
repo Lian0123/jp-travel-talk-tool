@@ -1,37 +1,65 @@
 {
-  "name": "my-typescript-react-template",
-  "version": "0.1.0",
+  "name": "jp-voice-saver",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
   "config": {
     "commitizen": {
       "path": "cz-conventional-changelog"
     }
   },
-  "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "prebuild": "rimraf ./build/*",
+    "build": "webpack build",
+    "lint": "eslint . --ext .tsx,.ts",
+    "lint:fix": "eslint . --ext .tsx,.ts --fix",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "eslintConfig": {
+    "extends":[
+       "react-app",
+       "react-app/jest"
+    ]
   },
   "dependencies": {
     "@emotion/react": "11.9.0",
     "@emotion/styled": "11.8.1",
     "@mui/material": "5.8.0",
-    "next": "12.1.5",
+    "dayjs": "1.11.7",
+    "i18next-browser-languagedetector": "7.0.1",
+    "idb": "7.1.1",
+    "kanji": "0.19.3",
+    "kuroshiro": "1.2.0",
+    "kuroshiro-analyzer-kuromoji": "1.1.0",
+    "node-polyfill-webpack-plugin": "2.0.1",
+    "path-browserify": "1.0.1",
     "react": "18.0.0",
     "react-dom": "18.0.0",
-    "swr": "1.3.0",
-    "three": "0.139.2"
+    "react-i18next": "12.1.4",
+    "uuid": "9.0.0"
   },
   "devDependencies": {
     "@types/node": "17.0.27",
     "@types/react": "18.0.6",
     "@types/react-dom": "18.0.2",
+    "@types/uuid": "^9.0.1",
+    "@types/wanakana": "4.0.3",
+    "@typescript-eslint/eslint-plugin": "5.56.0",
     "commitizen": "4.2.4",
+    "copy-webpack-plugin": "11.0.0",
     "cz-conventional-changelog": "3.3.0",
     "eslint": "8.14.0",
-    "eslint-config-next": "12.1.5",
+    "eslint-config-airbnb": "19.0.4",
+    "eslint-plugin-import": "2.27.5",
+    "eslint-plugin-jsx-a11y": "6.7.1",
+    "eslint-plugin-react": "7.32.2",
+    "eslint-plugin-react-hooks": "4.6.0",
     "husky": "7.0.0",
-    "typescript": "4.6.3"
-  }
+    "rimraf": "4.1.1",
+    "ts-loader": "9.4.2",
+    "typescript": "4.6.3",
+    "webpack-cli": "5.0.1"
+  },
+  "author": "lian0123",
+  "license": "MIT"
 }
