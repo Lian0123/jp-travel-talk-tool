@@ -105,7 +105,6 @@ const IndexedDB = () => {
                     return resolve(result);
                 }
 
-                console.log(objectStore.result);
                 result.push(objectStore.result.value);
                 objectStore.result.continue();
             };

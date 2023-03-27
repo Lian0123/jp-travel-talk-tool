@@ -52,11 +52,9 @@ const AddCardDialog = (prop: IAddCardDialog) => {
   const handleChange = (event:any) => {
     const file = event.target.files[0];
     const reader = new FileReader();
-    console.log(reader);
 
     reader.readAsText(file, "UTF-8");
     reader.onload = async (evt) => {
-      console.log(evt.target.result);
       let jsonfile;
   
       // check is json
