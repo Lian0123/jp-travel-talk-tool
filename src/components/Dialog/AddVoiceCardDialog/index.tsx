@@ -85,7 +85,7 @@ const AddVoiceCardDialog = (prop: IAddVoiceCardDialog) => {
     }
 
     const kuroshiro = new Kuroshiro();
-    const analyzer = new KuromojiAnalyzer({ dictPath: `/jp-web-app//src/public/kuromoji`});
+    const analyzer = new KuromojiAnalyzer({ dictPath: `/jp-travel-talk-tool/src/public/kuromoji`});
 
     await kuroshiro.init(analyzer);
 
