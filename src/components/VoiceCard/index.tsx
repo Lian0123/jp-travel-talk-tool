@@ -145,7 +145,7 @@ const VoiceCard = (props: IVoiceCard) => {
                     <Box m={1}>
                        <Button
                         fullWidth
-                        onClick={() => setIsClickPlaying(!isClickPlaying)}
+                        onClick={() => setIsClickPlaying(true)}
                         style={{border: 2, lineHeight: "1rem" }}
                         variant="contained"
                         color="primary"

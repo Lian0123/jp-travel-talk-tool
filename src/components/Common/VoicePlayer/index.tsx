@@ -4,7 +4,7 @@ import {useEffect} from "react";
 
 const VoicePlayer = (props:any) => {
     const { text = '' } = props;
-    const { isClickPlaying = false, setIsClickPlaying } = props;
+    const { isClickPlaying = false, setIsClickPlaying = false } = props;
     let voices :any[] = [];
 
     useEffect(()=>{
@@ -17,7 +17,7 @@ const VoicePlayer = (props:any) => {
     }, [isClickPlaying]);
 
     const playAudio = () => {
-        if (!voices?.length) {
+        if (!voices?.length || !isClickPlaying) {
             setIsClickPlaying(false);
             return;
         }
