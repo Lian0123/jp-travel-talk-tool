@@ -24,6 +24,9 @@ import InputAdornment from '@mui/material/InputAdornment';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
 
+/* Utils */
+import { transform } from '../../../utils';
+
 
 interface IEditVoiceCardDialog {
     open: boolean;
@@ -79,8 +82,10 @@ const EditVoiceCardDialog = (prop: IEditVoiceCardDialog) => {
 
     await kuroshiro.init(analyzer);
 
-    const parseText = await kuroshiro.convert(Kuroshiro.Util.kanaToHiragna(text), { to: "hiragana" });
-    if(!parseText?.trim()?.length) {
+    const parseText = await kuroshiro.convert(Kuroshiro.Util.kanaToHiragna(text)?.trim(), { to: "hiragana" });
+    const speakText =  transform(parseText);
+    const romaText = await kuroshiro.convert(Kuroshiro.Util.kanaToRomaji(speakText), { to: "romaji" });
+    if(!speakText?.length) {
       alert("about not found");
       return;
     }
@@ -91,7 +96,8 @@ const EditVoiceCardDialog = (prop: IEditVoiceCardDialog) => {
       tag,
       about: about.trim(),
       text: text.trim(),
-      speakText: parseText.trim(),
+      speakText,
+      romaText,
       order,
       createdTime,
       updatedTime: dayjs().toISOString(),

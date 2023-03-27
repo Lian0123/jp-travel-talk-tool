@@ -97,6 +97,7 @@ const ViewPage = (props: any) => {
                         tag={voiceCard.tag}
                         voiceText={voiceCard.text}
                         speakText={voiceCard.speakText}
+                        romaText={voiceCard.romaText}
                         aboutText={voiceCard.about}
                         createdTime={voiceCard.createdTime}
                         updatedTime={voiceCard.updatedTime}

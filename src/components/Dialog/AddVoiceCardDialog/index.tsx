@@ -89,8 +89,10 @@ const AddVoiceCardDialog = (prop: IAddVoiceCardDialog) => {
 
     await kuroshiro.init(analyzer);
 
-    const parseText = await kuroshiro.convert(Kuroshiro.Util.kanaToHiragna(text), { to: "hiragana" });
-    if(!parseText?.trim()?.length) {
+    const parseText = await kuroshiro.convert(Kuroshiro.Util.kanaToHiragna(text)?.trim(), { to: "hiragana" });
+    const speakText =  transform(parseText);
+    const romaText = await kuroshiro.convert(Kuroshiro.Util.kanaToRomaji(speakText), { to: "romaji" });
+    if(!speakText?.length) {
       alert("about not found");
       return;
     }
@@ -101,7 +103,8 @@ const AddVoiceCardDialog = (prop: IAddVoiceCardDialog) => {
       tag,
       about: about.trim(),
       text: text.trim(),
-      speakText: transform(parseText.trim()),
+      speakText,
+      romaText,
       order: voiceCards.length + 1,
       createdTime: dayjs().toISOString(),
       updatedTime: dayjs().toISOString(),

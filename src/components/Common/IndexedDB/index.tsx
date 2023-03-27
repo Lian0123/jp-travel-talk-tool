@@ -161,6 +161,7 @@ const IndexedDB = () => {
         const textDataStore = initDB.createObjectStore("textData", { keyPath: "uuid" });
         textDataStore.createIndex("text", "text", { unique: false });
         textDataStore.createIndex("speakText", "speakText", { unique: false });
+        textDataStore.createIndex("romaText", "romaText", { unique: false });
         textDataStore.createIndex("title", "title", { unique: false });
         textDataStore.createIndex("tag", "tag", { unique: false });
         textDataStore.createIndex("about", "about", { unique: false });

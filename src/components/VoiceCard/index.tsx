@@ -23,6 +23,7 @@ interface IVoiceCard {
     title: string,
     voiceText: string,
     speakText: string,
+    romaText: string;
     aboutText: string,
     [key: string]: any;
 }
@@ -36,6 +37,7 @@ const VoiceCard = (props: IVoiceCard) => {
         title,
         voiceText,
         speakText,
+        romaText,
         aboutText,
         setIsShowAddTagDialog,
         createdTime,
@@ -137,6 +139,10 @@ const VoiceCard = (props: IVoiceCard) => {
                     <Box m={1}>
                         <b>{t("voiceText")}</b>
                         <p>{voiceText||"not Text"}</p>
+                    </Box>
+                    <Box m={1}>
+                        <b>{t("voiceRoma")}</b>
+                        <p>{romaText||"not Text"}</p>
                     </Box>
                     <Box m={1}>
                         <b>{t("voiceAbout")}</b>
