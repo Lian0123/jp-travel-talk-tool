@@ -1,15 +1,17 @@
 
 export const transform = (inputText) => {
-    const transformText = '';
-    const subTexts = inputText.split(/[^A-Z0-9]+|(?<=[A-Z])(?=[0-9])|(?<=[0-9])(?=[A-Z])/);
+    let transformText = '';
+    const subTexts = inputText.split(/[^ぁ-ん0-9]+|(?<=[ぁ-ん])(?=[0-9])|(?<=[0-9])(?=[ぁ-ん])/);
     for (const subText of subTexts) {
-        if (/0+/.test(subText)) {
-            numberToChar(subText)
-        } else if (/\d/.test(subText)) {
-            numberDataToString(subText)
-        } else {
+        if (/^0+$/.test(subText)) {
+            transformText += numberToChar(subText);
+        } else if (/^\d$/.test(subText)) {
+            transformText += numberDataToString(subText);
+        } else if (/^[ぁ-ん]+$/.test(subText)) {
+            transformText += subText;
+        }else {
             for (const charactor of subText) {
-                output += symbolToString(charactor);
+                transformText += symbolToString(charactor);
             }
         }
     }
