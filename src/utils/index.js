@@ -5,7 +5,7 @@ export const transform = (inputText) => {
     for (const subText of subTexts) {
         if (/^0+$/.test(subText)) {
             transformText += numberToChar(subText);
-        } else if (/^\d$/.test(subText)) {
+        } else if (/^\d+$/.test(subText)) {
             transformText += numberDataToString(subText);
         } else if (/^[ぁ-ん]+$/.test(subText)) {
             transformText += subText;
