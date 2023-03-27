@@ -24,6 +24,7 @@ interface IAddCardDialog {
     setOpen: (...dto :any) => any;
     setCardDialogOpen: (...dto :any) => any;
     setVoiceCards: (...dto :any) => any;
+    setTags: (...dto :any) => any;
     createCommand: (...dto :any) => any;
 }
 
@@ -34,6 +35,7 @@ const AddCardDialog = (prop: IAddCardDialog) => {
     setOpen,
     setCardDialogOpen,
     setVoiceCards,
+    setTags,
     // db-control
     createCommand,
   } = prop;
@@ -75,11 +77,16 @@ const AddCardDialog = (prop: IAddCardDialog) => {
         return;
       }
  
-      // check version
       for (const textData of jsonfile.data) {
         await createCommand('textData', textData);
         setVoiceCards((previousData :any) => ([
           ...previousData, textData
+        ]));
+      }
+      for (const tagData of jsonfile.tags) {
+        createCommand('tagData',tagData);
+        setTags((previousData :any) => ([
+          ...previousData, tagData
         ]));
       }
     };

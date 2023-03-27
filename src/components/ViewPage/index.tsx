@@ -218,6 +218,7 @@ const ViewPage = (props: any) => {
         setOpen={setIsShowAddCardDialog}
         setCardDialogOpen={setIsShowAddVoiceCardDialog}
         setVoiceCards={setVoiceCards}
+        setTags={setTags}
         createCommand={createCommand}
         />
       <AddVoiceCardDialog

@@ -52,7 +52,8 @@ const AddVoiceCardDialog = (prop: IExportVoiceCardDialog) => {
     const exportjson = {
       appName: APP_NAME_SPACE,
       version: VERSION,
-      data: matchVoiceCards
+      data: matchVoiceCards,
+      tags
     }; 
     const element = document.createElement("a");
     const file = new Blob([JSON.stringify(exportjson, null, 4)], {type: 'text/plain'});
