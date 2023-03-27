@@ -30,6 +30,7 @@ interface IAddTagsDialog {
     tags: any[];
     setTags: (...dto :any) => any;
     createCommand: (...dto :any) => any;
+    deleteCommand: (...dto :any) => any;
 }
 
 const DEFAULT_VOICE_CARD_DATA = {
@@ -46,6 +47,7 @@ const AddTagsDialog = (prop: IAddTagsDialog) => {
     setTags,
     // db-control
     createCommand,
+    deleteCommand,
    } = prop;
 
   const { t } = useTranslation();
@@ -70,6 +72,11 @@ const AddTagsDialog = (prop: IAddTagsDialog) => {
     ]));
     await setTagsData(DEFAULT_VOICE_CARD_DATA);
     setOpen(false);
+  };
+
+  const handleDeleteTag = async (uuid: string) => {
+    await deleteCommand('tagData',uuid);
+    setTags((previousData :any) => previousData?.filter((data: any) => data.uuid !== uuid));
   };
 
   const handleSubmit = () => {
@@ -122,7 +129,7 @@ const AddTagsDialog = (prop: IAddTagsDialog) => {
                       key={value.uuid}
                       disableGutters
                       secondaryAction={
-                        <IconButton style={{backgroundColor: '#280b0bff', borderRadius: '0%'}}>
+                        <IconButton onClick={() => handleDeleteTag(value.uuid)} style={{backgroundColor: '#280b0bff', borderRadius: '0%'}}>
                           <img src="src/public/images/trash_icon.png" height={20} width={20} />
                         </IconButton>
                       }

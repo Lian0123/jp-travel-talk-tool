@@ -239,6 +239,7 @@ const ViewPage = (props: any) => {
         tags={tags}
         setTags={setTags}
         createCommand={createCommand}
+        deleteCommand={deleteCommand}
         />
         <ExportDialog
          open={isShowExportDialog}
