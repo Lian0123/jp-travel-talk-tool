@@ -1,6 +1,6 @@
 /* React Config */
 import * as React from "react";
-import {useEffect, useState} from "react";
+import { useDeferredValue, useEffect, useMemo, useState } from "react";
 
 /* React i18n Config */
 import { useTranslation } from "react-i18next";
@@ -42,6 +42,8 @@ const ViewPage = (props: any) => {
     const [tags,setTags] = useState([]);
     const [search, setSearch] = useState('');
     const [tag, setTag] = useState('all');
+    const [mode, setMode] = useState('right');
+    const deferredSearch = useDeferredValue(search);
 
     const [isShowAboutDialog,setIsShowAboutDialog] = useState(false);
     const [isShowExportDialog, setIsShowExportDialog] = useState(false);
@@ -70,13 +72,52 @@ const ViewPage = (props: any) => {
         setTags(data);
     };
 
+    const initMode = async () => {
+        const data = await readCommand('configData', 'mode');
+        const modeValue = data?.value || localStorage.getItem('jp_hand_mode') || 'right';
+        setMode(modeValue);
+    };
+
     useEffect(() => {
         if(isConnection) {
             initVoiceCardData();
             initTagData();
+            initMode();
         }
     }, [isConnection]);
+
+    useEffect(() => {
+        const refreshConfig = () => {
+            initMode();
+        };
+
+        window.addEventListener('jp-config-updated', refreshConfig as EventListener);
+        return () => {
+            window.removeEventListener('jp-config-updated', refreshConfig as EventListener);
+        };
+    }, [isConnection]);
+
+    const filteredVoiceCards = useMemo(() => {
+        const keyword = deferredSearch.trim().toLowerCase();
+
+        return voiceCards
+            ?.filter((voiceCard: any) => tag === 'all' || voiceCard?.tag === tag)
+            ?.filter((voiceCard: any) => {
+                if (!keyword.length) {
+                    return true;
+                }
+
+                const title = voiceCard?.title?.toLowerCase?.() || '';
+                const text = voiceCard?.text?.toLowerCase?.() || '';
+                const about = voiceCard?.about?.toLowerCase?.() || '';
+
+                return title.includes(keyword) || text.includes(keyword) || about.includes(keyword);
+            });
+    }, [voiceCards, tag, deferredSearch]);
       
+    const isRightHandMode = mode !== 'left';
+    const menuTooltipPlacement = isRightHandMode ? 'left' : 'right';
+
     return (
         <> 
             <Backdrop style={{zIndex: 1024}} open={isClickMenu} />
@@ -87,10 +128,8 @@ const ViewPage = (props: any) => {
             <Toolbar />
             <Container style={{ paddingBottom: '10%' }}>
                 {
-                    voiceCards?.filter(voiceCard => tag === 'all' || voiceCard?.tag === tag)
-                              ?.filter(voiceCard => voiceCard?.title?.includes(search))
-                              ?.map(voiceCard => (
-                    <>
+                    filteredVoiceCards?.map((voiceCard: any) => (
+                    <React.Fragment key={voiceCard.uuid}>
                         <VoiceCard
                         uuid={voiceCard.uuid}
                         title={voiceCard.title}
@@ -109,26 +148,31 @@ const ViewPage = (props: any) => {
                         voiceCards={voiceCards}
                         setVoiceCards={setVoiceCards}
                         setIsShowAddTagDialog={setIsShowAddTagDialog}
+                        mode={mode}
                         updateCommand={updateCommand}
                         /> 
                         <br/>
-                    </>
+                    </React.Fragment>
                 ))}
             </Container>
 
             <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
             
-            <Toolbar>
+            <Toolbar sx={{ flexDirection: isRightHandMode ? 'row' : 'row-reverse' }}>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                 <Select
-                    style={{color:"#ffffffff", paddingRight: "60px" }}
+                    style={{
+                        color:"#ffffffff",
+                        paddingRight: isRightHandMode ? "60px" : 0,
+                        paddingLeft: isRightHandMode ? 0 : "60px"
+                    }}
                     fullWidth
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    value={'all'}
+                    value={tag}
                     size="medium"
                     IconComponent={() => (
-                        <img src="src/public/images/white_select_icon.png" height={20} width={20} />
+                        <img src="public/images/white_select_icon.png" height={20} width={20} />
                     )}
                     onChange={(e) => setTag(e.target.value)}
                 >
@@ -142,21 +186,28 @@ const ViewPage = (props: any) => {
             
             <SpeedDial
                     ariaLabel="SpeedDial basic example"
-                    sx={{ position: 'absolute', bottom: 0, right: 16, padding: 0 }}
+                    sx={{
+                        position: 'absolute',
+                        bottom: 0,
+                        right: isRightHandMode ? 16 : 'auto',
+                        left: isRightHandMode ? 'auto' : 16,
+                        padding: 0
+                    }}
                     style={{ lineHeight: "1rem", borderRadius: '0%' }}
                     onClick={ () => !isClickMenu ? handleOpen() : handleClose()} 
                     onClose={handleClose}
                     open={isClickMenu}
                     icon={
                         isClickMenu
-                        ? <img src="src/public/images/page_close.png" height={40} width={40} />
-                        : <img src="src/public/images/page_menu.png" height={40} width={40} />
+                        ? <img src="public/images/page_close.png" height={40} width={40} />
+                        : <img src="public/images/page_menu.png" height={40} width={40} />
                     }
                     >
                         <SpeedDialAction
                             key={"Setting"}
-                            icon={<img src="src/public/images/setting_button.png" height={40} width={40} />}
+                            icon={<img src="public/images/setting_button.png" height={40} width={40} />}
                             tooltipTitle={"Setting"}
+                            tooltipPlacement={menuTooltipPlacement}
                             tooltipOpen
                             style={{ lineHeight: "1rem" }}
                             onClick={() => {
@@ -166,8 +217,9 @@ const ViewPage = (props: any) => {
                         />
                         <SpeedDialAction
                             key={"Export"}
-                            icon={<img src="src/public/images/export_button.png" height={40} width={40} />}
+                            icon={<img src="public/images/export_button.png" height={40} width={40} />}
                             tooltipTitle={"Export"}
+                            tooltipPlacement={menuTooltipPlacement}
                             tooltipOpen
                             style={{ lineHeight: "1rem" }}
                             onClick={() => {
@@ -177,8 +229,9 @@ const ViewPage = (props: any) => {
                         />
                         <SpeedDialAction
                             key={"Search"}
-                            icon={<img src="src/public/images/search_button.png" height={40} width={40} />}
+                            icon={<img src="public/images/search_button.png" height={40} width={40} />}
                             tooltipTitle={"Search"}
+                            tooltipPlacement={menuTooltipPlacement}
                             tooltipOpen
                             style={{ lineHeight: "1rem" }}
                             onClick={() => {
@@ -188,8 +241,9 @@ const ViewPage = (props: any) => {
                         />
                         <SpeedDialAction
                             key={"Add"}
-                            icon={<img src="src/public/images/add_button.png" height={40} width={40} />}
+                            icon={<img src="public/images/add_button.png" height={40} width={40} />}
                             tooltipTitle={"Add"}
+                            tooltipPlacement={menuTooltipPlacement}
                             tooltipOpen
                             style={{ lineHeight: "1rem" }}
                             onClick={() => {

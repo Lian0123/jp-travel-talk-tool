@@ -43,6 +43,7 @@ const VoiceCard = (props: IVoiceCard) => {
         createdTime,
         voiceCards,
         setVoiceCards,
+        mode = 'right',
         order,
         // db-control
         createCommand,
@@ -60,6 +61,7 @@ const VoiceCard = (props: IVoiceCard) => {
     
     
     const [isClickPlaying, setIsClickPlaying] = useState(false);
+    const isRightHandMode = mode !== 'left';
     const handleOpen = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
         setAnchorEl(event.currentTarget);
         setIsClickMenu(true);
@@ -75,14 +77,30 @@ const VoiceCard = (props: IVoiceCard) => {
         await deleteCommand('textData',uuid);
         setVoiceCards((previousData :any) => previousData?.filter((data: any) => data.uuid !== uuid));
     };
+
+    const handleTogglePlay = () => {
+        setIsClickPlaying((previousState: boolean) => !previousState);
+    };
     
     return (
         <>
-            <Box sx={{ backgroundColor: "#ffffffff", border:5, borderColor:"#280b0bff" }}>
+            <Box
+                sx={{
+                    backgroundColor: "#ffffffff",
+                    border: 3,
+                    borderColor: "#280b0bff",
+                    borderRadius: 1,
+                    transition: 'transform 180ms ease, box-shadow 180ms ease',
+                    '&:hover': {
+                        transform: 'translateY(-2px)',
+                        boxShadow: '0 6px 16px rgba(40,11,11,.16)'
+                    }
+                }}
+            >
                 <Container>
                     <Grid
                         container
-                        direction="row"
+                        direction={isRightHandMode ? "row" : "row-reverse"}
                         alignItems="center"
                     >
                         <Box width="30%">
@@ -103,24 +121,24 @@ const VoiceCard = (props: IVoiceCard) => {
                             <span ><b>{title}</b></span>
                             </Box>
                         </Box>
-                        <Box width="20%" style={{ textAlign: "right"}}>
+                        <Box width="20%" style={{ textAlign: isRightHandMode ? "right" : "left"}}>
                             <Button
                                 onClick={handleOpen}
                                 style={{
                                      zIndex: 5, 
                                      minWidth: "32px", 
-                                     textAlign: "right", 
+                                     textAlign: isRightHandMode ? "right" : "left", 
                                      lineHeight: "1rem", 
                                      padding: 0, 
-                                     marginRight: '1rem', 
-                                     marginLeft: '1rem'
+                                     marginRight: isRightHandMode ? '1rem' : 0, 
+                                     marginLeft: isRightHandMode ? '1rem' : '1rem'
                                 }}
                                 id="card-menu-button"
                                 aria-controls={'card-menu'}
                                 aria-haspopup={isClickMenu ? 'true' : undefined}
                                 aria-expanded={isClickMenu ? 'true' : undefined}
                             >
-                                <img src="src/public/images/card_menu.png" height={20} width={20} />
+                                <img src="public/images/card_menu.png" height={20} width={20} />
                             </Button>
                         </Box>
                         <Menu
@@ -151,15 +169,17 @@ const VoiceCard = (props: IVoiceCard) => {
                     <Box m={1}>
                        <Button
                         fullWidth
-                        onClick={() => setIsClickPlaying(true)}
+                        onClick={handleTogglePlay}
                         style={{border: 2, lineHeight: "1rem" }}
                         variant="contained"
                         color="primary"
                         endIcon={
-                            <img src="src/public/images/play_icon.png" height={20} width={20} />
+                            isClickPlaying
+                            ? <img src="public/images/stop_icon.png" height={20} width={20} />
+                            : <img src="public/images/play_icon.png" height={20} width={20} />
                         }
                         >
-                            {t("playAudio")}
+                            {isClickPlaying ? t("stopAudio") : t("playAudio")}
                         </Button> 
                     </Box>
                 </Container>

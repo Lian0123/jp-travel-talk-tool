@@ -26,7 +26,7 @@ i18n
             addNewVoiceCard: "Add New Voice Card",
             importVoiceCard: "Import Voice Card By .json file",
             about: "About",
-            aboutContent: "The web is develop from lian0123, voice is from wiki",
+            aboutContent: "This app is developed by lian0123. Default playback uses browser speech synthesis; if you connect cloud TTS, usage rights follow your provider's terms.",
             projectLink: "Project Link",
             changeLanguage: "Change Language",
             handMode: "Hand Mode",
@@ -42,6 +42,10 @@ i18n
             orderSetting: "Order Seting",
             editVoiceData: "Edit Voice Data",
             notFetchVoiceCard: "Not fetch voice card, can't export file",
+            ttsEngine: "Japanese TTS Engine",
+            ttsBrowser: "Browser Speech (No setup)",
+            ttsCloud: "Cloud / Custom API",
+            ttsEndpoint: "TTS API Endpoint",
         }
       },
       'zh-TW': {
@@ -64,7 +68,7 @@ i18n
             addNewVoiceCard: "新增卡片",
             importVoiceCard: "由json匯入",
             about: "關於",
-            aboutContent: "此網頁由lian0123開發. 音訊檔案來自於維基百科公有資源\n\n ",
+            aboutContent: "此工具由 lian0123 開發。預設語音使用瀏覽器語音合成；若串接雲端 TTS，使用授權與條款以你所選服務為準。",
             projectLink: "專案連結",
             changeLanguage: "變換語言",
             handMode: "操作模式",
@@ -80,6 +84,10 @@ i18n
             orderSetting: "排序設定",
             editVoiceData: "編輯語音資料",
             notFetchVoiceCard: "沒有符合條件的詞卡，無法匯出",
+            ttsEngine: "日語語音引擎",
+            ttsBrowser: "瀏覽器語音（免設定）",
+            ttsCloud: "雲端 / 自架 API",
+            ttsEndpoint: "TTS API 端點",
         }
       }
     },

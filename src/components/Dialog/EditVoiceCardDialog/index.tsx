@@ -11,6 +11,9 @@ import * as dayjs from 'dayjs';
 const Kuroshiro = require("kuroshiro").default;
 const KuromojiAnalyzer = require("kuroshiro-analyzer-kuromoji").default;
 
+const LOCAL_DICT_PATH = 'public/kuromoji';
+const REMOTE_DICT_PATH = 'https://cdn.jsdelivr.net/npm/kuromoji@0.1.2/dict';
+
 /* Mui Compoent */
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -77,14 +80,23 @@ const EditVoiceCardDialog = (prop: IEditVoiceCardDialog) => {
       return;
     }
 
+    const isFileProtocol = window.location.protocol === 'file:';
     const kuroshiro = new Kuroshiro();
-    const analyzer = new KuromojiAnalyzer({ dictPath: `/jp-travel-talk-tool/src/public/kuromoji`});
+    const normalizedText = Kuroshiro.Util.kanaToHiragna(text)?.trim() || text?.trim();
+    let parseText = normalizedText;
 
-    await kuroshiro.init(analyzer);
+    try {
+      const dictPath = isFileProtocol ? REMOTE_DICT_PATH : LOCAL_DICT_PATH;
+      const analyzer = new KuromojiAnalyzer({ dictPath });
+      await kuroshiro.init(analyzer);
+      parseText = await kuroshiro.convert(normalizedText, { to: "hiragana" });
+    } catch {
+      parseText = normalizedText;
+    }
 
-    const parseText = await kuroshiro.convert(Kuroshiro.Util.kanaToHiragna(text)?.trim(), { to: "hiragana" });
-    const speakText =  transform(parseText);
-    const romaText = await kuroshiro.convert(Kuroshiro.Util.kanaToRomaji(speakText), { to: "romaji" });
+    const transformedText = transform(parseText);
+    const speakText = transformedText?.trim()?.length ? transformedText : (parseText || text?.trim());
+    const romaText = Kuroshiro.Util.kanaToRomaji(parseText || speakText);
     if(!speakText?.length) {
       alert("about not found");
       return;
@@ -226,7 +238,7 @@ const EditVoiceCardDialog = (prop: IEditVoiceCardDialog) => {
             }}
             onClick={handleClose}
           >
-            <img src="src/public/images/dialog_close_button.png" height={20} width={20} />
+            <img src="public/images/dialog_close_button.png" height={20} width={20} />
           </IconButton>
           <Button variant="contained" color="primary" onClick={handleSubmit} fullWidth>
             UPDATE

@@ -148,7 +148,7 @@ const AddCardDialog = (prop: IAddCardDialog) => {
             }}
             onClick={handleClose}
           >
-            <img src="src/public/images/dialog_close_button.png" height={20} width={20} />
+            <img src="public/images/dialog_close_button.png" height={20} width={20} />
           </IconButton>
         </DialogActions>
       </Dialog>

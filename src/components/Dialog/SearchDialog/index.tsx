@@ -61,6 +61,12 @@ const SearchDialog = (prop: ISearchDialog) => {
                     value={searchText}
                     variant="standard"
                     onChange={(e) => setSearchText(e.target.value)}
+                    autoFocus
+                    onKeyDown={(event) => {
+                      if (event.key === 'Enter') {
+                        handleClose();
+                      }
+                    }}
                     style={{ paddingTop: "1rem", paddingBottom: "1rem" }}
                     fullWidth
                 />
@@ -76,7 +82,7 @@ const SearchDialog = (prop: ISearchDialog) => {
             }}
             onClick={handleClose}
           >
-            <img src="src/public/images/dialog_close_button.png" height={20} width={20} />
+            <img src="public/images/dialog_close_button.png" height={20} width={20} />
           </IconButton>
           <Button variant="contained" color="primary" onClick={handleClose} fullWidth>
             {t("search")}

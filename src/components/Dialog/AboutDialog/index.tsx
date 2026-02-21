@@ -29,7 +29,9 @@ interface IAboutDialog {
 
 const DEFAULT_CONFIG = {
   language: 'zh-TW',
-  mode: 'right'
+  mode: 'right',
+  ttsEngine: 'browser',
+  ttsEndpoint: ''
 };
 
 const AboutDialog = (prop: IAboutDialog) => {
@@ -65,8 +67,9 @@ const AboutDialog = (prop: IAboutDialog) => {
   };
   const initChangeMode = async () => {
     const data = await readCommand('configData','mode');
-    const value = data?.value?.value;
+    const value = data?.value;
     if(!value) {
+      localStorage.setItem('jp_hand_mode', DEFAULT_CONFIG.mode);
       return;
     }
 
@@ -74,11 +77,31 @@ const AboutDialog = (prop: IAboutDialog) => {
       ...previousData,
       mode: value || DEFAULT_CONFIG.mode
     }));
+    localStorage.setItem('jp_hand_mode', value || DEFAULT_CONFIG.mode);
   };
+
+  const initTTSConfig = async () => {
+    const ttsEngineData = await readCommand('configData', 'ttsEngine');
+    const ttsEndpointData = await readCommand('configData', 'ttsEndpoint');
+
+    const ttsEngine = ttsEngineData?.value || DEFAULT_CONFIG.ttsEngine;
+    const ttsEndpoint = ttsEndpointData?.value || DEFAULT_CONFIG.ttsEndpoint;
+
+    localStorage.setItem('jp_tts_engine', ttsEngine);
+    localStorage.setItem('jp_tts_endpoint', ttsEndpoint);
+
+    setConfigData((previousData) => ({
+      ...previousData,
+      ttsEngine,
+      ttsEndpoint
+    }));
+  };
+
   useEffect(() => {
     if(isConnection) {
       initChangeLanguage();
       initChangeMode();
+      initTTSConfig();
     }
   }, [isConnection]);
   
@@ -91,7 +114,21 @@ const AboutDialog = (prop: IAboutDialog) => {
   useEffect(() => {
     deleteCommand('configData', 'mode');
     createCommand('configData', { key: "mode", value: configData.mode });
+    localStorage.setItem('jp_hand_mode', configData.mode);
+    window.dispatchEvent(new CustomEvent('jp-config-updated'));
   }, [configData.mode]);
+
+  useEffect(() => {
+    deleteCommand('configData', 'ttsEngine');
+    createCommand('configData', { key: 'ttsEngine', value: configData.ttsEngine });
+    localStorage.setItem('jp_tts_engine', configData.ttsEngine);
+  }, [configData.ttsEngine]);
+
+  useEffect(() => {
+    deleteCommand('configData', 'ttsEndpoint');
+    createCommand('configData', { key: 'ttsEndpoint', value: configData.ttsEndpoint });
+    localStorage.setItem('jp_tts_endpoint', configData.ttsEndpoint);
+  }, [configData.ttsEndpoint]);
 
   const handleClose = () => {
     setOpen(false);
@@ -147,11 +184,50 @@ const AboutDialog = (prop: IAboutDialog) => {
                     variant="standard"
                     style={{ paddingTop: "1rem", paddingBottom: "1rem" }}
                     fullWidth
-                    disabled
                 >
                     <MenuItem value={'right'}>{t("rightHandMode")}</MenuItem>
                     <MenuItem value={'left'}>{t("leftHandMode")}</MenuItem>
                 </TextField>
+                <TextField
+                    id="standard-select-tts-engine"
+                    select
+                    label={`■ ${t("ttsEngine")}`}
+                    value={configData.ttsEngine}
+                    onChange={(event) => {
+                      const { value } = event.target;
+                      if (value === 'cloud') {
+                        return;
+                      }
+                      setConfigData((previousData) => ({
+                        ...previousData,
+                        ttsEngine: value
+                      }));
+                    }}
+                    variant="standard"
+                    disabled={true}
+                    style={{ paddingTop: "1rem", paddingBottom: "1rem" }}
+                    fullWidth
+                >
+                    <MenuItem value={'browser'}>{t("ttsBrowser")}</MenuItem>
+                    <MenuItem value={'cloud'}>{t("ttsCloud")}</MenuItem>
+                </TextField>
+                <TextField
+                    id="standard-tts-endpoint"
+                    label={`■ ${t("ttsEndpoint")}`}
+                    value={configData.ttsEndpoint}
+                    onChange={(event) => {
+                      const { value } = event.target;
+                      setConfigData((previousData) => ({
+                        ...previousData,
+                        ttsEndpoint: value
+                      }));
+                    }}
+                    variant="standard"
+                    style={{ paddingTop: "1rem", paddingBottom: "1rem" }}
+                    placeholder="https://your-tts-api.example.com/speak"
+                    fullWidth
+                    disabled={configData.ttsEngine !== 'cloud'}
+                />
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -164,7 +240,7 @@ const AboutDialog = (prop: IAboutDialog) => {
             }}
             onClick={handleClose}
           >
-            <img src="src/public/images/dialog_close_button.png" height={20} width={20} />
+            <img src="public/images/dialog_close_button.png" height={20} width={20} />
           </IconButton>
         </DialogActions>
       </Dialog>

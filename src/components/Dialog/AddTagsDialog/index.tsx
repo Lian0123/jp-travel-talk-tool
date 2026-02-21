@@ -130,7 +130,7 @@ const AddTagsDialog = (prop: IAddTagsDialog) => {
                       disableGutters
                       secondaryAction={
                         <IconButton onClick={() => handleDeleteTag(value.uuid)} style={{backgroundColor: '#280b0bff', borderRadius: '0%'}}>
-                          <img src="src/public/images/trash_icon.png" height={20} width={20} />
+                          <img src="public/images/trash_icon.png" height={20} width={20} />
                         </IconButton>
                       }
                     >
@@ -154,7 +154,7 @@ const AddTagsDialog = (prop: IAddTagsDialog) => {
             }}
             onClick={handleClose}
           >
-            <img src="src/public/images/dialog_close_button.png" height={20} width={20} />
+            <img src="public/images/dialog_close_button.png" height={20} width={20} />
           </IconButton>
         </DialogActions>
       </Dialog>
